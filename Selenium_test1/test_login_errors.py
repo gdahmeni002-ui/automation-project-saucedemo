@@ -1,6 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+driver = webdriver.Chrome(options=options)
 
 # Disable Selenium Manager - requires external chromedriver
 os.environ["SE_DISABLE_BROWSER_DOWNLOAD"] = "true"
