@@ -1,21 +1,39 @@
-locators:
-  username: user-name
-  password: password
-  login_button: login-button
-  error_message: "h3[data-test='error']"
-  error_close: error-button
+name: Selenium Tests CI
 
-invalid_login:
-  username: wrong_user
-  password: wrong_pass
-  expected_error: "Epic sadface: Username and password do not match any user in this service"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-missing_username:
-  username: ""
-  password: secret_sauce
-  expected_error: "Epic sadface: Username is required"
+jobs:
+  test:
+    runs-on: ubuntu-latest
 
-missing_password:
-  username: standard_user
-  password: ""
-  expected_error: "Epic sadface: Password is required"
+    steps:
+      # 1️⃣ Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Installer Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      # 3️⃣ Installer les dépendances
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4️⃣ Debug : vérifier que le dossier des tests existe
+      - name: List test folder
+        run: |
+          echo "Listing contents of Selenium_test1:"
+          ls -R Selenium_test1 || echo "Folder not found!"
+
+      # 5️⃣ Lancer les tests Selenium
+      - name: Run Selenium tests
+        run: |
+          python -m pytest Selenium_test1 --maxfail=1 --disable-warnings -v
