@@ -39,3 +39,11 @@ jobs:
       - name: Run Selenium tests
         run: |
           python -m pytest Selenium_test1 --maxfail=1 --disable-warnings -v
+          
+      # 7️⃣ Upload du rapport pour GitHub Actions
+      - name: Upload test report
+        uses: actions/upload-artifact@v3
+        with:
+         name: selenium-test-report
+         path: test-reports/results.xml
+   
