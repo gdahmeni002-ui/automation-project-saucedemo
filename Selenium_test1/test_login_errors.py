@@ -10,7 +10,6 @@ from test_functions import (
     open_application,
     login,
     get_error_message,
-    close_error_message
 )
 
 # ================= CONFIG =================
