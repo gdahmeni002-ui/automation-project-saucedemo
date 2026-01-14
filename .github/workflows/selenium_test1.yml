@@ -31,12 +31,10 @@ jobs:
       # 4️⃣ Installer Chrome et ChromeDriver
       - name: Setup Chrome and ChromeDriver
         run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          wget -N https://chromedriver.storage.googleapis.com/116.0.5845.96/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
+      - name: Setup ChromeDriver
+        uses: nanasess/setup-chromedriver@v1
+        with:
+         chromedriver-version: latest
 
       # 5️⃣ Debug : vérifier que le dossier des tests existe
       - name: List test folder
