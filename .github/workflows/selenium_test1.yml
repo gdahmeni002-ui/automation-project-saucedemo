@@ -27,14 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           python -m pip install pytest
-
-      # 4️⃣ Installer Chrome et ChromeDriver
-      - name: Setup Chrome and ChromeDriver
-        run: |
-      - name: Setup ChromeDriver
-        uses: nanasess/setup-chromedriver@v1
-        with:
-         chromedriver-version: latest
+          pip install pytest selenium chromedriver-autoinstaller
 
       # 5️⃣ Debug : vérifier que le dossier des tests existe
       - name: List test folder
