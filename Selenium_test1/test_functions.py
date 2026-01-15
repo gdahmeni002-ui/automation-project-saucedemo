@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 # ================= DATA =================
-def test_load_json_data():
+def test_load_json_data(filename):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(base_dir, json_filename)
 
