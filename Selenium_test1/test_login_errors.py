@@ -49,7 +49,7 @@ for case in test_cases:
 
     test_login(driver, locators, case["username"], case["password"])
 
-    error_text = get_error_message(driver, locators["error_message"])
+    error_text = test_get_error_message(driver, locators["error_message"])
     print("Message affiché :", error_text)
 
     if error_text == case["expected_error"]:
