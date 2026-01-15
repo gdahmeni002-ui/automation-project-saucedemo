@@ -17,11 +17,14 @@ jobs:
 
       # 2️⃣ Vérifier que le fichier JSON existe
       - name: Vérifier login_errors_data.json
+        shell: powershell
         run: |
-          if [ ! -f Selenium_test1/login_errors_data.json ]; then
-              echo "Le fichier login_errors_data.json est manquant !"
+          if (-Not (Test-Path "Selenium_test1/login_errors_data.json")) {
+              Write-Host "Le fichier login_errors_data.json est manquant !"
               exit 1
-          fi
+          } else {
+              Write-Host "Fichier trouvé."
+          }
 
       # 3️⃣ Installer Python
       - name: Set up Python
@@ -34,7 +37,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          python -m pip install pytest
           pip install pytest selenium chromedriver-autoinstaller
 
       # 5️⃣ Installer Chrome et ChromeDriver via Chocolatey
@@ -50,17 +52,16 @@ jobs:
         shell: powershell
         run: |
           New-Item -ItemType Directory -Force -Path C:\Chrome_Sources\chromedriver-win64
-         
           $driver = Get-ChildItem -Recurse "C:\ProgramData\chocolatey\lib\chromedriver\tools" `
             -Filter chromedriver.exe | Select-Object -First 1
-         
           Copy-Item $driver.FullName "C:\Chrome_Sources\chromedriver-win64\chromedriver.exe"
 
       # 7️⃣ Debug : vérifier que le dossier des tests existe
       - name: List test folder
+        shell: powershell
         run: |
-          echo "Listing contents of Selenium_test1:"
-          ls -R Selenium_test1 || echo "Folder not found!"
+          Write-Host "Listing contents of Selenium_test1:"
+          Get-ChildItem -Recurse Selenium_test1
 
       # 8️⃣ Lancer les tests Selenium
       - name: Run Selenium tests
