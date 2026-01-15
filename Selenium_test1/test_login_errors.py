@@ -20,7 +20,7 @@ from test_functions import (
 # ================= CONFIG =================
 URL = "https://www.saucedemo.com"
 CHROME_DRIVER_PATH = r"C:\chrome-sources\chromedriver-win64"
-CHROME_PORTABLE_PATH = r"C:\chrome-sources\chrome-win64"
+CHROME_PORTABLE_PATH = r"C:/automation-project-saucedemo/ChromePortable/Chrome.exe"
 
 # ================= DRIVER (IDENTIQUE TEST 2) =================
 options = Options()
