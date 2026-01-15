@@ -52,3 +52,25 @@ def test_invalid_login():
     error_text = test_get_error_message(driver, locators["error_message"])
     assert error_text == case["expected_error"]
 driver.quit()
+def test_missing_username():
+    driver = create_driver()
+    case = data["missing_username"]
+
+    test_open_application(driver, URL)
+    test_login(driver, case.get("username", ""), case["password"])
+    error_text = test_get_error_message(driver)
+    assert error_text == case["expected_error"]
+
+    driver.quit()
+
+
+def test_missing_password():
+    driver = create_driver()
+    case = data["missing_password"]
+
+    test_open_application(driver, URL)
+    test_login(driver, case["username"], case.get("password", ""))
+    error_text = test_get_error_message(driver)
+    assert error_text == case["expected_error"]
+
+    driver.quit()
