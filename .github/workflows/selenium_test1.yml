@@ -67,8 +67,84 @@ jobs:
       - name: Run Selenium tests
         run: |
           python -m pytest Selenium_test1 --maxfail=1 --disable-warnings -v
+      name: Selenium Tests CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      # 1️⃣ Checkout du code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Vérifier que le fichier JSON existe
+      - name: Vérifier login_errors_data.json
+        shell: powershell
+        run: |
+          if (-Not (Test-Path "Selenium_test1/login_errors_data.json")) {
+              Write-Host "Le fichier login_errors_data.json est manquant !"
+              exit 1
+          } else {
+              Write-Host "Fichier trouvé."
+          }
+
+      # 3️⃣ Installer Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      # 4️⃣ Installer les dépendances
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest selenium chromedriver-autoinstaller
+
+      # 5️⃣ Installer Chrome et ChromeDriver via Chocolatey
+      - name: Installer Chrome et ChromeDriver
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          choco install googlechrome -y --ignore-checksums
+          choco install chromedriver -y
+
+      # 6️⃣ Copier ChromeDriver dans le dossier attendu par ton script
+      - name: Préparer ChromeDriver pour le script
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force -Path C:\Chrome_Sources\chromedriver-win64
+          $driver = Get-ChildItem -Recurse "C:\ProgramData\chocolatey\lib\chromedriver\tools" `
+            -Filter chromedriver.exe | Select-Object -First 1
+          Copy-Item $driver.FullName "C:\Chrome_Sources\chromedriver-win64\chromedriver.exe"
+
+      # 7️⃣ Debug : vérifier que le dossier des tests existe
+      - name: List test folder
+        shell: powershell
+        run: |
+          Write-Host "Listing contents of Selenium_test1:"
+          Get-ChildItem -Recurse Selenium_test1
+
+      # 8️⃣ Lancer les tests Selenium
+      - name: Run Selenium tests
+        run: |
+          python -m pytest Selenium_test1 --maxfail=1 --disable-warnings -v
           
       # 9️⃣ Upload du rapport pour GitHub Actions
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+         name: selenium-test-report
+         path: test-reports/results.xml
+          
+      # 10️⃣ Upload du rapport pour GitHub Actions
       - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
