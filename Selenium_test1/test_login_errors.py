@@ -16,6 +16,8 @@ from test_functions import (
     test_login,
     test_get_error_message,
 )
+from test_functions import load_test_data
+data = load_test_data("test_data.json")
 
 # ================= CONFIG =================
 URL = "https://www.saucedemo.com"
@@ -41,21 +43,12 @@ test_cases = [
 ]
 
 # ================= TEST =================
-for case in test_cases:
-    print("\n" + "=" * 60)
-    print("TEST :", case["expected_error"])
-    print("=" * 60)
+def test_invalid_login():
+    case = data["invalid_login"]
 
     test_open_application(driver, URL)
-
     test_login(driver, locators, case["username"], case["password"])
 
     error_text = test_get_error_message(driver, locators["error_message"])
-    print("Message affiché :", error_text)
-
-    if error_text == case["expected_error"]:
-        print("✅ TEST OK")
-    else:
-        print("❌ TEST FAILED")
-
+    assert error_text == case["expected_error"]
 driver.quit()
