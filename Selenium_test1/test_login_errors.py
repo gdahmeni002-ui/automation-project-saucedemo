@@ -30,8 +30,9 @@ driver = webdriver.Chrome(options=options)
 
 
 # ================= LOAD JSON =================
-data = test_load_json_data("login_errors_data.json")
-locators = data["locators"]
+def test_load_json_data():
+    data = load_test_data("test_data.json")
+    assert data is not None
 
 test_cases = [
     data["invalid_login"],
