@@ -33,7 +33,7 @@ driver = webdriver.Chrome(options=options)
 
 # ================= LOAD JSON =================
 def test_load_json_data():
-    data = load_test_data("test_data.json")
+    load_test_data("test_data.json")
     assert data is not None
 
 test_cases = [
