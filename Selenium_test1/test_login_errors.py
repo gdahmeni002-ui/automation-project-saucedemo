@@ -19,8 +19,8 @@ from test_functions import (
 
 # ================= CONFIG =================
 URL = "https://www.saucedemo.com"
-CHROME_DRIVER_PATH = r"C:\chrome-sources\chromedriver-win64"
-CHROME_PORTABLE_PATH = r"C:\chrome-sources\chrome-win64"
+CHROME_DRIVER_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+CHROME_PORTABLE_PATH = r"C:\ProgramData\chocolatey\lib\chromedriver\tools\chromedriver.exe"
 
 # ================= DRIVER (IDENTIQUE TEST 2) =================
 options = Options()
