@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-
 # ================= DATA =================
 def load_test_data(filename):
     """Charge les données JSON"""
@@ -20,7 +19,7 @@ def load_test_data(filename):
 #  Nouvelle fonction de test pour Pytest
 def test_load_json_data():
     """Test simple pour vérifier que le fichier JSON est bien chargé"""
-    data = load_test_data("test_data.json")
+    data = load_test_data("login_errors_data.json")
     assert data is not None
     assert "invalid_login" in data
     assert "missing_username" in data
@@ -29,7 +28,6 @@ def test_load_json_data():
 # ================= NAVIGATION =================
 def test_open_application(driver, url):
     driver.get(url)
-
 
 # ================= LOGIN (COMMUN TEST 1 & 2) =================
 def test_login(driver, username, password, locators=None):
@@ -49,7 +47,6 @@ def test_login(driver, username, password, locators=None):
         driver.find_element(By.ID, "password").send_keys(password)
         driver.find_element(By.ID, "login-button").click()
 
-
 # ================= ERROR HANDLING (TEST 1) =================
 def test_get_error_message(driver, error_css=None):
     """Récupère le texte d'erreur"""
@@ -59,12 +56,10 @@ def test_get_error_message(driver, error_css=None):
         EC.visibility_of_element_located((By.CSS_SELECTOR, error_css))
     ).text
 
-
 def close_error_message(driver, close_button_id):
     WebDriverWait(driver, 5).until(
         EC.element_to_be_clickable((By.ID, close_button_id))
     ).click()
-
 
 # ================= NEW FUNCTION =================
 def test_login_with_case(driver, url, case):
@@ -77,4 +72,5 @@ def test_login_with_case(driver, url, case):
     password = case.get("password", "")
     test_login(driver, username, password)
     error_text = test_get_error_message(driver)
-    assert error_text == case["expected_error"]
+    # Assertion avec message clair si le test échoue
+    assert error_text == case["expected_error"], f"Erreur attendue: '{case['expected_error']}', trouvé: '{error_text}'"
