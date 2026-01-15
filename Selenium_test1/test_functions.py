@@ -17,6 +17,15 @@ def load_test_data(filename):
     with open(json_path, "r", encoding="utf-8") as file:
         return json.load(file)
 
+#  Nouvelle fonction de test pour Pytest
+def test_load_json_data():
+    """Test simple pour vérifier que le fichier JSON est bien chargé"""
+    data = load_test_data("test_data.json")
+    assert data is not None
+    assert "invalid_login" in data
+    assert "missing_username" in data
+    assert "missing_password" in data
+
 # ================= NAVIGATION =================
 def test_open_application(driver, url):
     driver.get(url)
