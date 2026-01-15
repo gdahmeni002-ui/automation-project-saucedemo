@@ -17,7 +17,6 @@ def load_test_data(filename):
     with open(json_path, "r", encoding="utf-8") as file:
         return json.load(file)
 
-
 # ================= NAVIGATION =================
 def test_open_application(driver, url):
     driver.get(url)
