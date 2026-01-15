@@ -1,6 +1,7 @@
+import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from test_functions import load_test_data, test_login_with_case
+from test_functions import load_test_data, login_with_case
 
 # ================= CONFIG =================
 URL = "https://www.saucedemo.com"
@@ -9,9 +10,9 @@ JSON_FILE = "login_errors_data.json"
 # ================= LOAD JSON =================
 data = load_test_data(JSON_FILE)
 
-# ================= DRIVER =================
+# ================= DRIVER CREATION =================
 def create_driver():
-    """Crée un Chrome driver en mode headless et incognito"""
+    """Crée un driver Chrome headless + incognito"""
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
@@ -23,17 +24,17 @@ def create_driver():
 # ================= TESTS =================
 def test_invalid_login():
     driver = create_driver()
-    test_login_with_case(driver, URL, data["invalid_login"])
+    login_with_case(driver, URL, data["invalid_login"])
     driver.quit()
 
 def test_missing_username():
     driver = create_driver()
-    test_login_with_case(driver, URL, data["missing_username"])
+    login_with_case(driver, URL, data["missing_username"])
     driver.quit()
 
 def test_missing_password():
     driver = create_driver()
-    test_login_with_case(driver, URL, data["missing_password"])
+    login_with_case(driver, URL, data["missing_password"])
     driver.quit()
 
 # ================= TEST JSON =================
