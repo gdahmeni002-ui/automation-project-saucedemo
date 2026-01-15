@@ -11,16 +11,21 @@ driver = webdriver.Chrome(options=options)
 os.environ["SE_DISABLE_BROWSER_DOWNLOAD"] = "true"
 
 from test_functions import (
-    load_json_data,
-    open_application,
-    login,
-    get_error_message,
+    test_load_json_data,
+    test_open_application,
+    test_login,
+    test_get_error_message,
 )
 
 # ================= CONFIG =================
 URL = "https://www.saucedemo.com"
+<<<<<<< HEAD
 CHROME_DRIVER_PATH = r"C:\chrome-sources\chromedriver-win64"
 CHROME_PORTABLE_PATH = r"C:/automation-project-saucedemo/ChromePortable/Chrome.exe"
+=======
+CHROME_DRIVER_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+CHROME_PORTABLE_PATH = r"C:\ProgramData\chocolatey\lib\chromedriver\tools\chromedriver.exe"
+>>>>>>> 0f5e675c8dee81765f425d1a7181ac8a0c1c06ab
 
 # ================= DRIVER (IDENTIQUE TEST 2) =================
 options = Options()
@@ -30,7 +35,7 @@ driver = webdriver.Chrome(options=options)
 
 
 # ================= LOAD JSON =================
-data = load_json_data("login_errors_data.json")
+data = test_load_json_data("login_errors_data.json")
 locators = data["locators"]
 
 test_cases = [
@@ -45,9 +50,9 @@ for case in test_cases:
     print("TEST :", case["expected_error"])
     print("=" * 60)
 
-    open_application(driver, URL)
+    test_open_application(driver, URL)
 
-    login(driver, locators, case["username"], case["password"])
+    test_login(driver, locators, case["username"], case["password"])
 
     error_text = get_error_message(driver, locators["error_message"])
     print("Message affiché :", error_text)

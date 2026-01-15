@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 # ================= DATA =================
-def load_json_data(json_filename):
+def test_load_json_data(json_filename):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     json_path = os.path.join(base_dir, json_filename)
 
@@ -18,12 +18,12 @@ def load_json_data(json_filename):
 
 
 # ================= NAVIGATION =================
-def open_application(driver, url):
+def test_open_application(driver, url):
     driver.get(url)
 
 
 # ================= LOGIN (COMMUN TEST 1 & 2) =================
-def login(driver, locators, username, password):
+def test_login(driver, locators, username, password):
     wait = WebDriverWait(driver, 5)
 
     wait.until(EC.presence_of_element_located((By.ID, locators["username"]))).clear()
@@ -36,7 +36,7 @@ def login(driver, locators, username, password):
 
 
 # ================= ERROR HANDLING (TEST 1) =================
-def get_error_message(driver, error_css):
+def test_get_error_message(driver, error_css):
     return WebDriverWait(driver, 5).until(
         EC.visibility_of_element_located((By.CSS_SELECTOR, error_css))
     ).text

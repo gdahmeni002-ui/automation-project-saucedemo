@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       # 1️⃣ Checkout du code
@@ -28,19 +28,37 @@ jobs:
           pip install -r requirements.txt
           python -m pip install pytest
           pip install pytest selenium chromedriver-autoinstaller
+       # 4️⃣ Installer Chrome et ChromeDriver via Chocolatey
+      - name: Installer Chrome et ChromeDriver
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force
+          choco install googlechrome -y --ignore-checksums
+          choco install chromedriver -y
 
-      # 5️⃣ Debug : vérifier que le dossier des tests existe
+      # 5️⃣ Copier ChromeDriver dans le dossier attendu par ton script
+      - name: Préparer ChromeDriver pour le script
+        shell: powershell
+        run: |
+              New-Item -ItemType Directory -Force -Path C:\Chrome_Sources\chromedriver-win64
+         
+              $driver = Get-ChildItem -Recurse "C:\ProgramData\chocolatey\lib\chromedriver\tools" `
+                -Filter chromedriver.exe | Select-Object -First 1
+         
+              Copy-Item $driver.FullName "C:\Chrome_Sources\chromedriver-win64\chromedriver.exe"
+
+      # 6️⃣ Debug : vérifier que le dossier des tests existe
       - name: List test folder
         run: |
           echo "Listing contents of Selenium_test1:"
           ls -R Selenium_test1 || echo "Folder not found!"
 
-      # 6️⃣ Lancer les tests Selenium
+      # 7️⃣ Lancer les tests Selenium
       - name: Run Selenium tests
         run: |
           python -m pytest Selenium_test1 --maxfail=1 --disable-warnings -v
           
-      # 7️⃣ Upload du rapport pour GitHub Actions
+      # 8️⃣ Upload du rapport pour GitHub Actions
       - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
